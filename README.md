@@ -1,20 +1,13 @@
-🚀 Build an Airbnb Clone with Next.js 14, Kinde, Supabase, Prisma, Tailwind and Shadcn/UI! Learn step-by-step and elevate your development skills. 
-
-- 🚀 Kinde Auth: https://dub.sh/xeU8r3v
-
-
-- 👨🏻‍💻 GitHub Repository: https://www.janmarshal.com/courses/create-an-airbnb-clone-with-next-js-14-kinde-supabase-prisma-and-tailwind
-- 🌍 My Website: https://www.janmarshal.com
-- 📧 Business ONLY: jan@alenix.de 
+🚀 InstaTravel Built with Next.js 14, Kinde, Supabase, Prisma, Tailwind and Shadcn/UI! Learn step-by-step and elevate your development skills. 
 
 Resources used:
-- Next.js: https://nextjs.org
-- Kinde: https://dub.sh/xeU8r3v
-- Tailwind.css: https://tailwindcss.com
-- Shadcn/UI: https://ui.shadcn.com
-- Prisma: https://prisma.io
-- Supabase: https://supabase.com
-- React-date-range: https://www.npmjs.com/package/react-date-range
+- Next.js: 
+- Kinde: 
+- Tailwind.css:
+- Shadcn/UI: 
+- Prisma: 
+- Supabase: 
+- React-date-range
 
 Features: 
 
