@@ -34,7 +34,7 @@ export function ListingCard({
     <div className="flex flex-col">
       <div className="relative h-72">
         <Image
-          src={`https://hjsbwsdjwoipcwadbjvy.supabase.co/storage/v1/object/public/Images/${imagePath}`}
+          src={`https://hjsbwsdjwoipcwadbjvy.supabase.co/storage/v1/object/sign/Images/wallhaven-qzevgq.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJJbWFnZXMvd2FsbGhhdmVuLXF6ZXZncS5qcGciLCJpYXQiOjE3MTcyNjE5MjgsImV4cCI6MTcxNzg2NjcyOH0.N0sjGa0l_lr4n51kO7uzhW5C2oJpwHzjJu1p2hjEBSk&t=2024-06-01T17%3A12%3A08.585Z`}
           alt="Image of House"
           fill
           className="rounded-lg h-full object-cover"
