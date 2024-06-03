@@ -29,10 +29,6 @@ export function ListingCard({
 }: iAppProps) {
   const { getCountryByValue } = useCountries();
   const country = getCountryByValue(location);
-
-  console.log(imagePath);
-
-
   return (
     <div className="flex flex-col">
       <div className="relative h-72">
