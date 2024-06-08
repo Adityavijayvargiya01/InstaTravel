@@ -32,8 +32,8 @@ export function ListingCard({
   return (
     <div className="flex flex-col">
       <div className="relative h-72">
-        <Image
-          src={`https://hjsbwsdjwoipcwadbjvy.supabase.co/storage/v1/object/sign/Images/${imagePath}`}
+        <Image 
+          src={`https://hjsbwsdjwoipcwadbjvy.supabase.co/storage/v1/object/public/Images/${imagePath}`}
           alt='Image of Home'
           sizes="100%"
           fill
