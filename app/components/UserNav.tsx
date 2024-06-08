@@ -46,7 +46,7 @@ export async function UserNav() {
             <DropdownMenuItem>
               <form action={createHomewithId} className="w-full">
                 <button type="submit" className="w-full text-start">
-                 My Uploads
+                 Upload your Own
                 </button>
               </form>
             </DropdownMenuItem>
