@@ -1,4 +1,4 @@
-<img src="public/kinde-modified.png" alt="drawing" width="500"/>
+# InstaTravel
 
 **InstaTravel** is a travel website that helps users discover and book accommodations such as hotels, resorts, and Airbnb rentals at popular travel destinations. The unique aspect of this platform is that it curates its listings based on recommendations from popular Instagram influencers, providing a social and trendy perspective on travel accommodations.
 
