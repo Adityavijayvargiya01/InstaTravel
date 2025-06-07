@@ -5,8 +5,7 @@ const withBundleAnalyzer = bundleAnalyzer({
 });
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  images: {
+const nextConfig = {  images: {
     remotePatterns: [
       {
         hostname: "a0.muscache.com",
@@ -20,6 +19,11 @@ const nextConfig = {
       },
       {
         hostname: "static.vecteezy.com",
+        protocol: "https",
+        port: "",
+      },
+      {
+        hostname: "lh3.googleusercontent.com",
         protocol: "https",
         port: "",
       },

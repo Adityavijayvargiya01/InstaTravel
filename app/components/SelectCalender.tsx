@@ -6,6 +6,7 @@ import "react-date-range/dist/theme/default.css"; // theme css file
 import { DateRange } from "react-date-range";
 import { useState } from "react";
 import { eachDayOfInterval } from "date-fns";
+import { enUS } from "date-fns/locale";
 
 export function SelectCalender({
   reservation,
@@ -45,8 +46,7 @@ export function SelectCalender({
         type="hidden"
         name="endDate"
         value={state[0].endDate.toISOString()}
-      />
-      <DateRange
+      />      <DateRange
         date={new Date()}
         showDateDisplay={false}
         rangeColors={["#FF5A5F"]}
@@ -54,7 +54,7 @@ export function SelectCalender({
         onChange={(item) => setState([item.selection] as any)}
         minDate={new Date()}
         direction="vertical"
-        disabledDates={disabledDates}
+        disabledDates={disabledDates}        locale={enUS}
       />
     </>
   );
