@@ -7,6 +7,7 @@ import { SelectCalender } from "@/app/components/SelectCalender";
 import { ReservationSubmitButton } from "@/app/components/SubmitButtons";
 import prisma from "@/app/lib/db";
 import { useCountries } from "@/app/lib/getCountries";
+import { getOptimizedImageUrl, IMAGE_SIZES, generateBlurDataURL } from "@/app/lib/imageUtils";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
@@ -62,13 +63,17 @@ export default async function HomeRoute({
   const user = await getUser();
   return (
     <div className="w-[75%] mx-auto mt-10 mb-12">
-      <h1 className="font-medium text-2xl mb-5">{data?.title}</h1>
-      <div className="relative h-[550px]">
+      <h1 className="font-medium text-2xl mb-5">{data?.title}</h1>      <div className="relative h-[550px]">
         <Image
-          alt="Image of Home"
-          src={`https://hjsbwsdjwoipcwadbjvy.supabase.co/storage/v1/object/public/Images/${data?.photo}`}
+          alt={`Image of ${data?.title || 'home'}`}
+          src={getOptimizedImageUrl(data?.photo || '')}
           fill
-          className="rounded-lg h-full object-cover w-full"
+          className="rounded-lg h-full object-cover w-full transition-opacity duration-300"
+          priority
+          sizes={IMAGE_SIZES.HERO_IMAGE}
+          placeholder="blur"
+          blurDataURL={generateBlurDataURL(800, 550)}
+          quality={85}
         />
       </div>
 
@@ -80,16 +85,18 @@ export default async function HomeRoute({
           <div className="flex gap-x-2 text-muted-foreground">
             <p>{data?.guests} Guests</p> * <p>{data?.bedrooms} Bedrooms</p> *{" "}
             {data?.bathrooms} Bathrooms
-          </div>
-
-          <div className="flex items-center mt-6">
-            <img
+          </div>          <div className="flex items-center mt-6">
+            <Image
               src={
                 data?.User?.profileImage ??
                 "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
               }
-              alt="User Profile"
-              className="w-11 h-11 rounded-full"
+              alt={`Profile picture of ${data?.User?.firstName || 'host'}`}
+              width={44}
+              height={44}
+              className="rounded-full object-cover"
+              loading="lazy"
+              sizes={IMAGE_SIZES.AVATAR}
             />
             <div className="flex flex-col ml-4">
               <h3 className="font-medium">Hosted by {data?.User?.firstName}</h3>

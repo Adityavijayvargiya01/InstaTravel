@@ -48,8 +48,8 @@ export default async function MyHomes() {
 
       {data.length === 0 ? (
         <NoItems
-          description="Please list a hoeme on airbnb so that you can see it right here"
-          title="Your dont have any Homes listed"
+          description="Please list a Hotel on Instatravel so that you can see it right here"
+          title="Your dont have any Hotels listed"
         />
       ) : (
         <div className="grid lg:grid-cols-4 sm:grid-cols-2 md:grid-cols-3 grid-cols-1 gap-8 mt-8">

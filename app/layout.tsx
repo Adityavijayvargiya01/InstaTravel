@@ -17,7 +17,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <head>
+        <link rel="preconnect" href="https://hjsbwsdjwoipcwadbjvy.supabase.co" />
+        <link rel="preconnect" href="https://a0.muscache.com" />
+        <link rel="dns-prefetch" href="https://hjsbwsdjwoipcwadbjvy.supabase.co" />
+        <link rel="dns-prefetch" href="https://a0.muscache.com" />
+        <link rel="dns-prefetch" href="https://static.vecteezy.com" />
+      </head>      <body className={inter.className}>
         <Navbar />
         {children}
       </body>

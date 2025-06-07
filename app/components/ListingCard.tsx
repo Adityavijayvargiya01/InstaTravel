@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useCountries } from "../lib/getCountries";
 import { AddToFavoriteButton, DeleteFromFavoriteButton } from "./SubmitButtons";
 import { DeleteFromFavorite, addToFavorite } from "../actions";
+import { getOptimizedImageUrl, IMAGE_SIZES, generateBlurDataURL } from "../lib/imageUtils";
 
 interface iAppProps {
   imagePath: string;
@@ -30,14 +31,17 @@ export function ListingCard({
   const { getCountryByValue } = useCountries();
   const country = getCountryByValue(location);
   return (
-    <div className="flex flex-col">
-      <div className="relative h-72">
+    <div className="flex flex-col">      <div className="relative h-72">
         <Image 
-          src={`https://hjsbwsdjwoipcwadbjvy.supabase.co/storage/v1/object/public/Images/${imagePath}`}
-          alt='Image of Home'
-          sizes="100%"
+          src={getOptimizedImageUrl(imagePath)}
+          alt={`Image of home in ${country?.label || 'destination'}`}
+          sizes={IMAGE_SIZES.LISTING_CARD}
           fill
-          className="rounded-lg h-full object-cover"
+          className="rounded-lg h-full object-cover transition-opacity duration-300"
+          loading="lazy"
+          placeholder="blur"
+          blurDataURL={generateBlurDataURL(400, 288)}
+          quality={80}
         />
 
         {userId && (
