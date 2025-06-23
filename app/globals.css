@@ -110,3 +110,48 @@ img {
   content-visibility: auto;
   contain: layout style paint;
 }
+
+/* Mobile-specific improvements */
+@media (max-width: 768px) {
+  /* Improve touch targets for mobile */
+  button, a[role="button"], [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Better text readability on mobile */
+  body {
+    line-height: 1.6;
+  }
+  
+  /* Improve form inputs on mobile */
+  input, textarea, select {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  /* Calendar component mobile improvements */
+  .rdrCalendarWrapper {
+    font-size: 12px;
+  }
+  .rdrDay {
+    height: 2.5rem;
+    line-height: 2.5rem;
+  }
+  .rdrDayNumber span {
+    font-size: 12px;
+  }
+}
+
+/* Smooth scrolling for category filters */
+.no-scrollbar {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Better focus states for accessibility */
+@media (max-width: 768px) {
+  *:focus-visible {
+    outline: 2px solid #000;
+    outline-offset: 2px;
+  }
+}

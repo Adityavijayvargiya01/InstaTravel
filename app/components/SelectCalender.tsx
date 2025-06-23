@@ -54,7 +54,11 @@ export function SelectCalender({
         onChange={(item) => setState([item.selection] as any)}
         minDate={new Date()}
         direction="vertical"
-        disabledDates={disabledDates}        locale={enUS}
+        disabledDates={disabledDates}
+        locale={enUS}
+        className="w-full"
+        monthDisplayFormat="MMM yyyy"
+        showMonthAndYearPickers={false}
       />
     </>
   );

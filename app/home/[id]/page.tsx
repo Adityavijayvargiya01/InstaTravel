@@ -60,10 +60,9 @@ export default async function HomeRoute({
   const { getCountryByValue } = useCountries();
   const country = getCountryByValue(data?.country as string);
   const { getUser } = getKindeServerSession();
-  const user = await getUser();
-  return (
-    <div className="w-[75%] mx-auto mt-10 mb-12">
-      <h1 className="font-medium text-2xl mb-5">{data?.title}</h1>      <div className="relative h-[550px]">
+  const user = await getUser();  return (
+    <div className="w-full px-4 lg:w-[85%] xl:w-[75%] mx-auto mt-6 lg:mt-10 mb-12">
+      <h1 className="font-medium text-xl lg:text-2xl mb-4 lg:mb-5">{data?.title}</h1>      <div className="relative h-[250px] sm:h-[350px] lg:h-[550px]">
         <Image
           alt={`Image of ${data?.title || 'home'}`}
           src={getOptimizedImageUrl(data?.photo || '')}
@@ -77,15 +76,15 @@ export default async function HomeRoute({
         />
       </div>
 
-      <div className="flex justify-between gap-x-24 mt-8">
-        <div className="w-2/3">
-          <h3 className="text-xl font-medium">
+      <div className="flex flex-col lg:flex-row lg:justify-between gap-8 lg:gap-x-24 mt-6 lg:mt-8">
+        <div className="w-full lg:w-2/3">
+          <h3 className="text-lg lg:text-xl font-medium">
             {country?.flag} {country?.label} / {country?.region}
           </h3>
-          <div className="flex gap-x-2 text-muted-foreground">
+          <div className="flex gap-x-2 text-muted-foreground text-sm lg:text-base">
             <p>{data?.guests} Guests</p> * <p>{data?.bedrooms} Bedrooms</p> *{" "}
             {data?.bathrooms} Bathrooms
-          </div>          <div className="flex items-center mt-6">
+          </div>          <div className="flex items-center mt-4 lg:mt-6">
             <Image
               src={
                 data?.User?.profileImage ??
@@ -94,43 +93,45 @@ export default async function HomeRoute({
               alt={`Profile picture of ${data?.User?.firstName || 'host'}`}
               width={44}
               height={44}
-              className="rounded-full object-cover"
+              className="rounded-full object-cover w-10 h-10 lg:w-11 lg:h-11"
               loading="lazy"
               sizes={IMAGE_SIZES.AVATAR}
             />
-            <div className="flex flex-col ml-4">
-              <h3 className="font-medium">Hosted by {data?.User?.firstName}</h3>
-              <p className="text-sm text-muted-foreground">Host since 2015</p>
+            <div className="flex flex-col ml-3 lg:ml-4">
+              <h3 className="font-medium text-sm lg:text-base">Hosted by {data?.User?.firstName}</h3>
+              <p className="text-xs lg:text-sm text-muted-foreground">Host since 2015</p>
             </div>
           </div>
 
-          <Separator className="my-7" />
+          <Separator className="my-5 lg:my-7" />
 
           <CaegoryShowcase categoryName={data?.categoryName as string} />
 
-          <Separator className="my-7" />
+          <Separator className="my-5 lg:my-7" />
 
-          <p className="text-muted-foreground">{data?.description}</p>
+          <p className="text-muted-foreground text-sm lg:text-base">{data?.description}</p>
 
-          <Separator className="my-7" />
+          <Separator className="my-5 lg:my-7" />
 
           <HomeMap locationValue={country?.value as string} />
         </div>
 
-        <form action={createReservation}>
-          <input type="hidden" name="homeId" value={params.id} />
-          <input type="hidden" name="userId" value={user?.id} />
+        <div className="w-full lg:w-1/3 lg:sticky lg:top-4 lg:self-start">
+          <form action={createReservation}>
+            <input type="hidden" name="homeId" value={params.id} />
+            <input type="hidden" name="userId" value={user?.id} />
 
-          <SelectCalender reservation={data?.Reservation} />
+            <SelectCalender reservation={data?.Reservation} />
 
-          {user?.id ? (
-            <ReservationSubmitButton />
-          ) : (
-            <Button className="w-full" asChild>
-              <Link href="/api/auth/login">Make a Reservation</Link>
-            </Button>
-          )}
-        </form>
+            {user?.id ? (
+              <ReservationSubmitButton />
+            ) : (
+              <Button className="w-full" asChild>
+                <Link href="/api/auth/login">Make a Reservation</Link>
+              </Button>
+            )}
+          </form>
+        </div>
       </div>
     </div>
   );

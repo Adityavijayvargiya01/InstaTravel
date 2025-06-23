@@ -13,15 +13,15 @@ export default function DescriptionPage({
 }) {
   return (
     <>
-      <div className="w-3/5 mx-auto">
-        <h2 className="text-3xl font-semibold tracking-tight transition-colors">
+      <div className="w-full px-4 sm:w-4/5 lg:w-3/5 mx-auto">
+        <h2 className="text-2xl lg:text-3xl font-semibold tracking-tight transition-colors">
           Please describe your home as good as you can!
         </h2>
       </div>
 
       <form action={CreateDescription}>
         <input type="hidden" name="homeId" value={params.id} />
-        <div className="mx-auto w-3/5 mt-10 flex flex-col gap-y-5 mb-36">
+        <div className="mx-auto w-full px-4 sm:w-4/5 lg:w-3/5 mt-10 flex flex-col gap-y-5 mb-36">
           <div className="flex flex-col gap-y-2">
             <Label>Title</Label>
             <Input
@@ -37,6 +37,7 @@ export default function DescriptionPage({
               name="description"
               required
               placeholder="Please describe your home..."
+              className="min-h-[100px]"
             />
           </div>
 
@@ -57,11 +58,11 @@ export default function DescriptionPage({
           </div>
 
           <Card>
-            <CardHeader className="flex flex-col gap-y-5">
+            <CardHeader className="flex flex-col gap-y-4 lg:gap-y-5 p-4 lg:p-6">
               <div className="flex items-center justify-between">
                 <div className="flex flex-col">
-                  <h3 className="underline font-medium">Guests</h3>
-                  <p className="text-muted-foreground text-sm">
+                  <h3 className="underline font-medium text-sm lg:text-base">Guests</h3>
+                  <p className="text-muted-foreground text-xs lg:text-sm">
                     How many guests do you want?
                   </p>
                 </div>
@@ -70,8 +71,8 @@ export default function DescriptionPage({
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex flex-col">
-                  <h3 className="underline font-medium">Rooms</h3>
-                  <p className="text-muted-foreground text-sm">
+                  <h3 className="underline font-medium text-sm lg:text-base">Rooms</h3>
+                  <p className="text-muted-foreground text-xs lg:text-sm">
                     How many rooms do you have?
                   </p>
                 </div>
@@ -80,8 +81,8 @@ export default function DescriptionPage({
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex flex-col">
-                  <h3 className="underline font-medium">Bathrooms</h3>
-                  <p className="text-muted-foreground text-sm">
+                  <h3 className="underline font-medium text-sm lg:text-base">Bathrooms</h3>
+                  <p className="text-muted-foreground text-xs lg:text-sm">
                     How many bathrooms do you have?
                   </p>
                 </div>

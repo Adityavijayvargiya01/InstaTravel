@@ -29,9 +29,8 @@ export function ListingCard({
   pathName,
 }: iAppProps) {
   const { getCountryByValue } = useCountries();
-  const country = getCountryByValue(location);
-  return (
-    <div className="flex flex-col">      <div className="relative h-72">
+  const country = getCountryByValue(location);  return (
+    <div className="flex flex-col">      <div className="relative h-56 sm:h-64 lg:h-72">
         <Image 
           src={getOptimizedImageUrl(imagePath)}
           alt={`Image of home in ${country?.label || 'destination'}`}
@@ -66,13 +65,13 @@ export function ListingCard({
       </div>
 
       <Link href={`/home/${homeId}`} className="mt-2">
-        <h3 className="font-medium text-base">
+        <h3 className="font-medium text-sm lg:text-base">
           {country?.flag} {country?.label} / {country?.region}
         </h3>
-        <p className="text-muted-foreground text-sm line-clamp-2">
+        <p className="text-muted-foreground text-xs lg:text-sm line-clamp-2 mt-1">
           {description}
         </p>
-        <p className="pt-2 text-muted-foreground">
+        <p className="pt-2 text-muted-foreground text-sm">
           <span className="font-medium text-black">${price}</span> Night
         </p>
       </Link>

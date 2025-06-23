@@ -9,12 +9,12 @@ export function CreationSubmit() {
   return (
     <>
       {pending ? (
-        <Button disabled size="lg">
+        <Button disabled size="default" className="px-6 lg:px-8">
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           Please Wait
         </Button>
       ) : (
-        <Button type="submit" size="lg">
+        <Button type="submit" size="default" className="px-6 lg:px-8">
           Next
         </Button>
       )}
@@ -31,7 +31,7 @@ export function AddToFavoriteButton() {
           variant="outline"
           size="icon"
           disabled
-          className="bg-primary-foreground"
+          className="bg-primary-foreground h-9 w-9 lg:h-10 lg:w-10"
         >
           <Loader2 className="h-4 w-4 animate-spin text-primary" />
         </Button>
@@ -39,7 +39,7 @@ export function AddToFavoriteButton() {
         <Button
           variant="outline"
           size="icon"
-          className="bg-primary-foreground"
+          className="bg-primary-foreground h-9 w-9 lg:h-10 lg:w-10"
           type="submit"
         >
           <Heart className="w-4 h-4" />
@@ -58,7 +58,7 @@ export function DeleteFromFavoriteButton() {
           variant="outline"
           size="icon"
           disabled
-          className="bg-primary-foreground"
+          className="bg-primary-foreground h-9 w-9 lg:h-10 lg:w-10"
         >
           <Loader2 className="h-4 w-4 animate-spin text-primary" />
         </Button>
@@ -66,7 +66,7 @@ export function DeleteFromFavoriteButton() {
         <Button
           variant="outline"
           size="icon"
-          className="bg-primary-foreground"
+          className="bg-primary-foreground h-9 w-9 lg:h-10 lg:w-10"
           type="submit"
         >
           <Heart className="w-4 h-4 text-primary" fill="#E21C49" />

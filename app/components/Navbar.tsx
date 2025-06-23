@@ -6,13 +6,12 @@ import { UserNav } from "./UserNav";
 import { SearchModalCompnent } from "./SearchComponent";
 
 export function Navbar() {
-  return (
-    <nav className="w-full border-b">
-      <div className="flex items-center justify-between container mx-auto px-5 lg:px-10 py-5">        <Link href="/">
+  return (    <nav className="w-full border-b">
+      <div className="flex items-center justify-between container mx-auto px-4 lg:px-5 xl:px-10 py-4 lg:py-5">        <Link href="/">
           <Image
             src={DesktopLogo}
             alt="Desktop Logo"
-            className="w-44 hidden lg:block"
+            className="w-32 lg:w-44 hidden lg:block"
             priority
             width={176}
             height={40}
@@ -21,7 +20,7 @@ export function Navbar() {
           <Image
             src={MobileLogo}
             alt="Mobile Logo"
-            className="block lg:hidden w-12"
+            className="block lg:hidden w-10 lg:w-12"
             priority
             width={48}
             height={48}

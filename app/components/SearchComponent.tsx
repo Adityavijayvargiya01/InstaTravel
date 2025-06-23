@@ -45,19 +45,17 @@ export function SearchModalCompnent() {
     }
   }
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <div className="rounded-full py-2 px-5 border flex items-center cursor-pointer">
+    <Dialog>      <DialogTrigger asChild>
+        <div className="rounded-full py-2 px-3 lg:px-5 border flex items-center cursor-pointer">
           <div className="flex h-full divide-x font-medium">
-            <p className="px-4">Anywhere</p>
-            <p className="px-4">Any Week</p>
-            <p className="px-4">Add Guests</p>
+            <p className="px-2 sm:px-3 lg:px-4 text-sm lg:text-base">Anywhere</p>
+            <p className="px-2 sm:px-3 lg:px-4 text-sm lg:text-base hidden sm:block">Any Week</p>
+            <p className="px-2 sm:px-3 lg:px-4 text-sm lg:text-base hidden md:block">Add Guests</p>
           </div>
 
-          <Search className="bg-primary text-white p-1 h-8 w-8 rounded-full" />
+          <Search className="bg-primary text-white p-1 h-8 w-8 rounded-full flex-shrink-0" />
         </div>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      </DialogTrigger>      <DialogContent className="sm:max-w-[425px] w-[95vw] max-h-[90vh] overflow-y-auto">
         <form className="gap-4 flex flex-col">
           <input type="hidden" name="country" value={locationValue} />
           {step === 1 ? (
