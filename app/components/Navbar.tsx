@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import DesktopLogo from "../../public/InstaTravel-desktop.png";
-import MobileLogo from "../../public/airbnb-mobile.webp";
 import { UserNav } from "./UserNav";
 import { SearchModalCompnent } from "./SearchComponent";
 
@@ -10,22 +9,22 @@ export function Navbar() {
       <div className="flex items-center justify-between container mx-auto px-4 lg:px-5 xl:px-10 py-4 lg:py-5">        <Link href="/">
           <Image
             src={DesktopLogo}
-            alt="Desktop Logo"
-            className="w-32 lg:w-44 hidden lg:block"
+            alt="InstaTravel Logo"
+            className="w-40 lg:w-52 hidden lg:block"
             priority
-            width={176}
-            height={40}
+            width={208}
+            height={48}
           />
 
           <Image
-            src={MobileLogo}
-            alt="Mobile Logo"
-            className="block lg:hidden w-10 lg:w-12"
+            src={DesktopLogo}
+            alt="InstaTravel Logo"
+            className="block lg:hidden w-28 h-auto"
             priority
-            width={48}
-            height={48}
+            width={112}
+            height={26}
           />
-        </Link>        <SearchModalCompnent />
+        </Link><SearchModalCompnent />
 
         <UserNav />
       </div>

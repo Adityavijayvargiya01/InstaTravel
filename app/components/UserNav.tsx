@@ -14,13 +14,13 @@ import {
 } from "@kinde-oss/kinde-auth-nextjs/components";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Link from "next/link";
-import { createAirbnbHome } from "../actions";
+import { createHome } from "../actions";
 
 export async function UserNav() {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
-  const createHomewithId = createAirbnbHome.bind(null, {
+  const createHomewithId = createHome.bind(null, {
     userId: user?.id as string,
   });
 

@@ -2,7 +2,7 @@ import { Suspense, use } from "react";
 
 import { MapFilterItems } from "./components/MapFilterItems";
 import prisma from "./lib/db";
-import { SkeltonCard } from "./components/SkeletonCard";
+import { SkeletonCard } from "./components/SkeletonCard";
 import { NoItems } from "./components/NoItem";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { ListingCard } from "./components/ListingCard";
@@ -117,15 +117,15 @@ async function ShowItems({
 function SkeletonLoading() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8 mt-8">
-      <SkeltonCard />
-      <SkeltonCard />
-      <SkeltonCard />
-      <SkeltonCard />
-      <SkeltonCard />
-      <SkeltonCard />
-      <SkeltonCard />
-      <SkeltonCard />
-      <SkeltonCard />
+      <SkeletonCard />
+      <SkeletonCard />
+      <SkeletonCard />
+      <SkeletonCard />
+      <SkeletonCard />
+      <SkeletonCard />
+      <SkeletonCard />
+      <SkeletonCard />
+      <SkeletonCard />
     </div>
   );
 }
