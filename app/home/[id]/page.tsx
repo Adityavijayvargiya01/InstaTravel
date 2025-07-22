@@ -16,7 +16,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { unstable_noStore as noStore } from "next/cache";
 
-console.log("hello");
+
 async function getData(homeid: string) {
   noStore();
   const data = await prisma.home.findUnique({
@@ -78,9 +78,18 @@ export default async function HomeRoute({
 
       <div className="flex flex-col lg:flex-row lg:justify-between gap-8 lg:gap-x-24 mt-6 lg:mt-8">
         <div className="w-full lg:w-2/3">
-          <h3 className="text-lg lg:text-xl font-medium">
-            {country?.flag} {country?.label} / {country?.region}
-          </h3>
+          <div className="flex items-center gap-x-2">
+            <Image
+              src={country?.flag as string}
+              alt="Country Flag"
+              width={24}
+              height={24}
+              className="rounded-full"
+            />
+            <h3 className="text-lg lg:text-xl font-medium">
+              {country?.label} / {country?.region}
+            </h3>
+          </div>
           <div className="flex gap-x-2 text-muted-foreground text-sm lg:text-base">
             <p>{data?.guests} Guests</p> * <p>{data?.bedrooms} Bedrooms</p> *{" "}
             {data?.bathrooms} Bathrooms

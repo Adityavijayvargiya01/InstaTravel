@@ -65,9 +65,18 @@ export function ListingCard({
       </div>
 
       <Link href={`/home/${homeId}`} className="mt-2">
-        <h3 className="font-medium text-sm lg:text-base">
-          {country?.flag} {country?.label} / {country?.region}
-        </h3>
+        <div className="flex items-center gap-x-2">
+          <Image
+            src={country?.flag as string}
+            alt="Country flag"
+            width={16}
+            height={16}
+            className="rounded-full"
+          />
+          <h3 className="font-medium text-sm lg:text-base">
+            {country?.label} / {country?.region}
+          </h3>
+        </div>
         <p className="text-muted-foreground text-xs lg:text-sm line-clamp-2 mt-1">
           {description}
         </p>

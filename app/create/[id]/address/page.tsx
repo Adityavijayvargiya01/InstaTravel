@@ -13,6 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
+import Image from "next/image";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 
@@ -46,7 +47,16 @@ export default function AddressRoutw({ params }: { params: { id: string } }) {
                   <SelectLabel>Countries</SelectLabel>
                   {getAllCountries().map((item) => (
                     <SelectItem key={item.value} value={item.value}>
-                      {item.flag} {item.label} / {item.region}
+                      <div className="flex items-center gap-x-2">
+                        <Image
+                          src={item.flag}
+                          alt="country flag"
+                          width={20}
+                          height={20}
+                          className="rounded-full"
+                        />
+                        <span>{item.label} / {item.region}</span>
+                      </div>
                     </SelectItem>
                   ))}
                 </SelectGroup>

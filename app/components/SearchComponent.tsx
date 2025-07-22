@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Image from "next/image";
 
 import { Search } from "lucide-react";
 import { useState } from "react";
@@ -80,7 +81,16 @@ export function SearchModalCompnent() {
                     <SelectLabel>Countries</SelectLabel>
                     {getAllCountries().map((item) => (
                       <SelectItem key={item.value} value={item.value}>
-                        {item.flag} {item.label} / {item.region}
+                        <div className="flex items-center gap-x-2">
+                          <Image
+                            src={item.flag}
+                            alt="country flag"
+                            width={20}
+                            height={20}
+                            className="rounded-full"
+                          />
+                          <span>{item.label} / {item.region}</span>
+                        </div>
                       </SelectItem>
                     ))}
                   </SelectGroup>

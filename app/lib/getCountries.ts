@@ -3,7 +3,7 @@ import countries from "world-countries";
 const countriesFormatted = countries.map((item) => ({
   value: item.cca2,
   label: item.name.common,
-  flag: item.flag,
+  flag: `https://hatscripts.github.io/circle-flags/flags/${item.cca2.toLowerCase()}.svg`,
   latLang: item.latlng,
   region: item.region,
 }));
