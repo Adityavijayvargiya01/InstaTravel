@@ -21,7 +21,7 @@ import {
 import Image from "next/image";
 
 import { Search } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo, useCallback, memo } from "react";
 import { useCountries } from "../lib/getCountries";
 import { HomeMap } from "./HomeMap";
 import { Button } from "@/components/ui/button";
@@ -29,25 +29,58 @@ import { CreationSubmit } from "./SubmitButtons";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Counter } from "./Counter";
 
+// Memoized country item to prevent re-renders
+const CountryItem = memo(function CountryItem({ 
+  item 
+}: { 
+  item: { value: string; flag: string; label: string; region: string } 
+}) {
+  return (
+    <SelectItem value={item.value}>
+      <div className="flex items-center gap-x-2">
+        <Image
+          src={item.flag}
+          alt={`${item.label} flag`}
+          width={20}
+          height={20}
+          className="rounded-full"
+          loading="lazy"
+        />
+        <span>{item.label} / {item.region}</span>
+      </div>
+    </SelectItem>
+  );
+});
+
 export function SearchModalCompnent() {
   const [step, setStep] = useState(1);
   const [locationValue, setLocationValue] = useState("");
   const { getAllCountries } = useCountries();
+  
+  // Memoize countries list
+  const countries = useMemo(() => getAllCountries(), [getAllCountries]);
 
-  function SubmitButtonLocal() {
+  const handleNextStep = useCallback(() => {
+    setStep(prev => prev + 1);
+  }, []);
+
+  const SubmitButtonLocal = useCallback(() => {
     if (step === 1) {
       return (
-        <Button onClick={() => setStep(step + 1)} type="button">
+        <Button onClick={handleNextStep} type="button">
           Next
         </Button>
       );
     } else if (step === 2) {
       return <CreationSubmit />;
     }
-  }
+    return null;
+  }, [step, handleNextStep]);
+
   return (
-    <Dialog>      <DialogTrigger asChild>
-        <div className="rounded-full py-2 px-3 lg:px-5 border flex items-center cursor-pointer">
+    <Dialog>
+      <DialogTrigger asChild>
+        <div className="rounded-full py-2 px-3 lg:px-5 border flex items-center cursor-pointer hover:shadow-md transition-shadow">
           <div className="flex h-full divide-x font-medium">
             <p className="px-2 sm:px-3 lg:px-4 text-sm lg:text-base">Anywhere</p>
             <p className="px-2 sm:px-3 lg:px-4 text-sm lg:text-base hidden sm:block">Any Week</p>
@@ -56,7 +89,8 @@ export function SearchModalCompnent() {
 
           <Search className="bg-primary text-white p-1 h-8 w-8 rounded-full flex-shrink-0" />
         </div>
-      </DialogTrigger>      <DialogContent className="sm:max-w-[425px] w-[95vw] max-h-[90vh] overflow-y-auto">
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px] w-[95vw] max-h-[90vh] overflow-y-auto">
         <form className="gap-4 flex flex-col">
           <input type="hidden" name="country" value={locationValue} />
           {step === 1 ? (
@@ -70,7 +104,7 @@ export function SearchModalCompnent() {
 
               <Select
                 required
-                onValueChange={(value) => setLocationValue(value)}
+                onValueChange={setLocationValue}
                 value={locationValue}
               >
                 <SelectTrigger className="w-full">
@@ -79,19 +113,8 @@ export function SearchModalCompnent() {
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Countries</SelectLabel>
-                    {getAllCountries().map((item) => (
-                      <SelectItem key={item.value} value={item.value}>
-                        <div className="flex items-center gap-x-2">
-                          <Image
-                            src={item.flag}
-                            alt="country flag"
-                            width={20}
-                            height={20}
-                            className="rounded-full"
-                          />
-                          <span>{item.label} / {item.region}</span>
-                        </div>
-                      </SelectItem>
+                    {countries.map((item) => (
+                      <CountryItem key={item.value} item={item} />
                     ))}
                   </SelectGroup>
                 </SelectContent>

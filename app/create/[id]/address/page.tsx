@@ -1,5 +1,6 @@
 "use client";
 
+import { use, useState } from "react";
 import { createLocation } from "@/app/actions";
 import { CreatioBottomBar } from "@/app/components/CreationBottomBar";
 import { useCountries } from "@/app/lib/getCountries";
@@ -15,9 +16,9 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import { useState } from "react";
 
-export default function AddressRoutw({ params }: { params: { id: string } }) {
+export default function AddressRoutw({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
   const { getAllCountries } = useCountries();
   const [locationValue, setLocationValue] = useState("");
 
@@ -34,7 +35,7 @@ export default function AddressRoutw({ params }: { params: { id: string } }) {
       </div>
 
       <form action={createLocation}>
-        <input type="hidden" name="homeId" value={params.id} />
+        <input type="hidden" name="homeId" value={id} />
         <input type="hidden" name="countryValue" value={locationValue} />
         <div className="w-full px-4 sm:w-4/5 lg:w-3/5 mx-auto mb-36">
           <div className="mb-5">

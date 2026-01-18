@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import { memo } from "react";
 import { useCountries } from "../lib/getCountries";
 import { AddToFavoriteButton, DeleteFromFavoriteButton } from "./SubmitButtons";
 import { DeleteFromFavorite, addToFavorite } from "../actions";
-import { getOptimizedImageUrl, IMAGE_SIZES, generateBlurDataURL } from "../lib/imageUtils";
+import { getOptimizedImageUrl, IMAGE_SIZES, BLUR_DATA_URL } from "../lib/imageUtils";
 
 interface iAppProps {
   imagePath: string;
@@ -15,9 +16,11 @@ interface iAppProps {
   favoriteId: string;
   homeId: string;
   pathName: string;
+  priority?: boolean; // Add priority prop for LCP optimization
 }
 
-export function ListingCard({
+// Memoized component to prevent unnecessary re-renders
+export const ListingCard = memo(function ListingCard({
   description,
   imagePath,
   location,
@@ -27,20 +30,25 @@ export function ListingCard({
   homeId,
   isInFavoriteList,
   pathName,
+  priority = false,
 }: iAppProps) {
   const { getCountryByValue } = useCountries();
-  const country = getCountryByValue(location);  return (
-    <div className="flex flex-col">      <div className="relative h-56 sm:h-64 lg:h-72">
+  const country = getCountryByValue(location);
+  
+  return (
+    <div className="flex flex-col">
+      <div className="relative h-56 sm:h-64 lg:h-72">
         <Image 
           src={getOptimizedImageUrl(imagePath)}
           alt={`Image of home in ${country?.label || 'destination'}`}
           sizes={IMAGE_SIZES.LISTING_CARD}
           fill
-          className="rounded-lg h-full object-cover transition-opacity duration-300"
-          loading="lazy"
+          className="rounded-lg h-full object-cover"
+          loading={priority ? "eager" : "lazy"}
+          priority={priority}
           placeholder="blur"
-          blurDataURL={generateBlurDataURL(400, 288)}
-          quality={80}
+          blurDataURL={BLUR_DATA_URL}
+          quality={75}
         />
 
         {userId && (
@@ -64,7 +72,7 @@ export function ListingCard({
         )}
       </div>
 
-      <Link href={`/home/${homeId}`} className="mt-2">
+      <Link href={`/home/${homeId}`} className="mt-2" prefetch={true}>
         <div className="flex items-center gap-x-2">
           <Image
             src={country?.flag as string}
@@ -86,4 +94,4 @@ export function ListingCard({
       </Link>
     </div>
   );
-}
+});

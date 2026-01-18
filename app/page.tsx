@@ -1,14 +1,17 @@
-import { Suspense, use } from "react";
-
+import { Suspense, cache } from "react";
 import { MapFilterItems } from "./components/MapFilterItems";
 import prisma from "./lib/db";
 import { SkeletonCard } from "./components/SkeletonCard";
 import { NoItems } from "./components/NoItem";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { ListingCard } from "./components/ListingCard";
-import { unstable_noStore as noStore } from "next/cache";
+import { connection } from "next/server";
 
-async function getData({
+// Revalidate every 60 seconds for fresh data while maintaining cache
+export const revalidate = 60;
+
+// Cached data fetching function
+const getData = cache(async ({
   searchParams,
   userId,
 }: {
@@ -20,8 +23,7 @@ async function getData({
     room?: string;
     bathroom?: string;
   };
-}) {
-  noStore();
+}) => {
   const data = await prisma.home.findMany({
     where: {
       addedCategory: true,
@@ -45,27 +47,35 @@ async function getData({
         },
       },
     },
+    // Limit initial load for better performance
+    take: 20,
+    orderBy: {
+      createdAT: 'desc',
+    },
   });
 
   return data;
-}
+});
 
-export default function Home({
+export default async function Home({
   searchParams,
 }: {
-  searchParams?: {
+  searchParams?: Promise<{
     filter?: string;
     country?: string;
     guest?: string;
     room?: string;
     bathroom?: string;
-  };
-}) {  return (
+  }>;
+}) {
+  const params = await searchParams;
+  
+  return (
     <div className="container mx-auto px-4 lg:px-5 xl:px-10">
       <MapFilterItems />
 
-      <Suspense key={searchParams?.filter} fallback={<SkeletonLoading />}>
-        <ShowItems searchParams={searchParams} />
+      <Suspense key={params?.filter} fallback={<SkeletonLoading />}>
+        <ShowItems searchParams={params} />
       </Suspense>
     </div>
   );
@@ -82,6 +92,9 @@ async function ShowItems({
     bathroom?: string;
   };
 }) {
+  // Defer to request time for user-specific data
+  await connection();
+  
   const { getUser } = getKindeServerSession();
   const user = await getUser();
   const data = await getData({ searchParams: searchParams, userId: user?.id });
@@ -94,7 +107,7 @@ async function ShowItems({
           title="Sorry no listings found for this category..."
         />
       ) : (        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8 mt-8">
-          {data.map((item) => (
+          {data.map((item, index) => (
             <ListingCard
               key={item.id}
               description={item.description as string}
@@ -106,6 +119,7 @@ async function ShowItems({
               isInFavoriteList={item.Favorite.length > 0 ? true : false}
               homeId={item.id}
               pathName="/"
+              priority={index < 4} // Prioritize first 4 images for LCP
             />
           ))}
         </div>

@@ -58,8 +58,14 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Hardware acceleration for smoother animations */
+  img, video {
+    transform: translateZ(0);
+  }
 }
 
+/* Hide scrollbar utility */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -67,66 +73,31 @@
 .no-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Image loading optimizations */
-.image-container {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(90deg, #f0f0f0 25%, transparent 37%, #f0f0f0 63%);
-  background-size: 400% 100%;
-  animation: shimmer 1.5s ease-in-out infinite;
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: 100% 0;
-  }
-  100% {
-    background-position: -100% 0;
-  }
-}
-
-.image-loading {
-  filter: blur(20px);
-  transform: scale(1.1);
-  transition: filter 0.3s ease, transform 0.3s ease;
-}
-
-.image-loaded {
-  filter: blur(0);
-  transform: scale(1);
-}
-
-/* Improve layout shift prevention */
-img[data-loading="true"] {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 37%, #f0f0f0 63%);
-  background-size: 400% 100%;
-  animation: shimmer 1.5s ease-in-out infinite;
-}
-
-/* Optimize images for better performance */
+/* Optimize image rendering */
 img {
   content-visibility: auto;
-  contain: layout style paint;
 }
 
-/* Mobile-specific improvements */
+/* Prevent layout shifts */
+[data-nimg] {
+  background-color: #f6f7f8;
+}
+
+/* Mobile-specific optimizations */
 @media (max-width: 768px) {
-  /* Improve touch targets for mobile */
+  /* Better touch targets */
   button, a[role="button"], [role="button"] {
     min-height: 44px;
     min-width: 44px;
   }
   
-  /* Better text readability on mobile */
-  body {
-    line-height: 1.6;
-  }
-  
-  /* Improve form inputs on mobile */
+  /* Prevent zoom on input focus (iOS) */
   input, textarea, select {
-    font-size: 16px; /* Prevents zoom on iOS */
+    font-size: 16px;
   }
   
   /* Calendar component mobile improvements */
@@ -137,21 +108,20 @@ img {
     height: 2.5rem;
     line-height: 2.5rem;
   }
-  .rdrDayNumber span {
-    font-size: 12px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
-/* Smooth scrolling for category filters */
-.no-scrollbar {
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Better focus states for accessibility */
-@media (max-width: 768px) {
-  *:focus-visible {
-    outline: 2px solid #000;
-    outline-offset: 2px;
-  }
+/* Focus states for accessibility */
+*:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
 }

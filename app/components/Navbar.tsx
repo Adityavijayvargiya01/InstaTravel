@@ -5,8 +5,10 @@ import { UserNav } from "./UserNav";
 import { SearchModalCompnent } from "./SearchComponent";
 
 export function Navbar() {
-  return (    <nav className="w-full border-b">
-      <div className="flex items-center justify-between container mx-auto px-4 lg:px-5 xl:px-10 py-4 lg:py-5">        <Link href="/">
+  return (
+    <nav className="w-full border-b">
+      <div className="flex items-center justify-between container mx-auto px-4 lg:px-5 xl:px-10 py-4 lg:py-5">
+        <Link href="/" prefetch={true}>
           <Image
             src={DesktopLogo}
             alt="InstaTravel Logo"
@@ -14,6 +16,7 @@ export function Navbar() {
             priority
             width={208}
             height={48}
+            placeholder="blur"
           />
 
           <Image
@@ -23,8 +26,11 @@ export function Navbar() {
             priority
             width={112}
             height={26}
+            placeholder="blur"
           />
-        </Link><SearchModalCompnent />
+        </Link>
+
+        <SearchModalCompnent />
 
         <UserNav />
       </div>

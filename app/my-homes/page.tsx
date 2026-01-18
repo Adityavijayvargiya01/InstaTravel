@@ -1,12 +1,14 @@
+import { cache } from "react";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import prisma from "../lib/db";
 import { redirect } from "next/navigation";
 import { NoItems } from "../components/NoItem";
 import { ListingCard } from "../components/ListingCard";
-import { unstable_noStore as noStore } from "next/cache";
 
-async function getData(userId: string) {
-  noStore();
+// Revalidate my-homes every 30 seconds
+export const revalidate = 30;
+
+const getData = cache(async (userId: string) => {
   const data = await prisma.home.findMany({
     where: {
       userId: userId,
@@ -32,7 +34,7 @@ async function getData(userId: string) {
   });
 
   return data;
-}
+});
 
 export default async function MyHomes() {
   const { getUser } = getKindeServerSession();
@@ -41,6 +43,7 @@ export default async function MyHomes() {
   if (!user) {
     return redirect("/");
   }
+  
   const data = await getData(user.id);  return (
     <section className="container mx-auto px-4 lg:px-5 xl:px-10 mt-6 lg:mt-10">
       <h2 className="text-2xl lg:text-3xl font-semibold tracking-tight">Your Homes</h2>

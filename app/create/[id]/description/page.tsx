@@ -6,11 +6,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-export default function DescriptionPage({
+export default async function DescriptionPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
+  
   return (
     <>
       <div className="w-full px-4 sm:w-4/5 lg:w-3/5 mx-auto">
@@ -20,7 +22,7 @@ export default function DescriptionPage({
       </div>
 
       <form action={CreateDescription}>
-        <input type="hidden" name="homeId" value={params.id} />
+        <input type="hidden" name="homeId" value={id} />
         <div className="mx-auto w-full px-4 sm:w-4/5 lg:w-3/5 mt-10 flex flex-col gap-y-5 mb-36">
           <div className="flex flex-col gap-y-2">
             <Label>Title</Label>

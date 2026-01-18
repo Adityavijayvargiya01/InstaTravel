@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +13,7 @@ import {
 } from "@kinde-oss/kinde-auth-nextjs/components";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Link from "next/link";
+import Image from "next/image";
 import { createHome } from "../actions";
 
 export async function UserNav() {
@@ -27,16 +27,18 @@ export async function UserNav() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <div className="rounded-full border px-2 py-2 lg:px-4 lg:py-2 flex items-center gap-x-3">
+        <div className="rounded-full border px-2 py-2 lg:px-4 lg:py-2 flex items-center gap-x-3" suppressHydrationWarning>
           <MenuIcon className="w-6 h-6 lg:w-5 lg:h-5" />
 
-          <img
+          <Image
             src={
               user?.picture ??
               "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
             }
-            alt="Image of the user"
-            className="rounded-full h-8 w-8 hidden lg:block"
+            alt="User profile picture"
+            width={32}
+            height={32}
+            className="rounded-full h-8 w-8 hidden lg:block object-cover"
           />
         </div>
       </DropdownMenuTrigger>

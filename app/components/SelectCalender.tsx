@@ -4,7 +4,7 @@ import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 
 import { DateRange } from "react-date-range";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { eachDayOfInterval } from "date-fns";
 import { enUS } from "date-fns/locale";
 
@@ -26,15 +26,19 @@ export function SelectCalender({
     },
   ]);
 
-  let disabledDates: Date[] = [];
-  reservation?.forEach((reservationItem) => {
-    const dateRange = eachDayOfInterval({
-      start: new Date(reservationItem.startDate),
-      end: new Date(reservationItem.endDate),
-    });
+  // Memoize disabled dates calculation to avoid recalculating on every render
+  const disabledDates = useMemo(() => {
+    let dates: Date[] = [];
+    reservation?.forEach((reservationItem) => {
+      const dateRange = eachDayOfInterval({
+        start: new Date(reservationItem.startDate),
+        end: new Date(reservationItem.endDate),
+      });
 
-    disabledDates = [...disabledDates, ...dateRange];
-  });
+      dates = [...dates, ...dateRange];
+    });
+    return dates;
+  }, [reservation]);
   return (
     <>
       <input

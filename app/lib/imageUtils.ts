@@ -8,11 +8,16 @@ export interface ImageSizeConfig {
   format?: 'webp' | 'avif' | 'jpeg' | 'png';
 }
 
+// Pre-computed static blur data URL to avoid runtime computation
+// This is a simple gray shimmer placeholder
+export const BLUR_DATA_URL = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjZmN2Y4Ii8+PC9zdmc+';
+
 /**
  * Generate optimized image URL with transformations
+ * Returns empty string for null/undefined paths to prevent errors
  */
-export function getOptimizedImageUrl(imagePath: string, config: ImageSizeConfig = {}): string {
-  const { quality = 75 } = config;
+export function getOptimizedImageUrl(imagePath: string | null | undefined): string {
+  if (!imagePath) return '';
   
   // For Supabase, we'll use Next.js Image optimization
   // The actual transformation happens through Next.js Image component
@@ -37,41 +42,16 @@ export function getResponsiveSizes(breakpoints: Record<string, string>): string 
  * Common image sizes for different use cases
  */
 export const IMAGE_SIZES = {
-  LISTING_CARD: getResponsiveSizes({
-    mobile: '(max-width: 640px) 100vw',
-    tablet: '(max-width: 1024px) 50vw',
-    desktop: '25vw'
-  }),
-  HERO_IMAGE: getResponsiveSizes({
-    mobile: '(max-width: 768px) 100vw',
-    desktop: '75vw'
-  }),
+  LISTING_CARD: '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw',
+  HERO_IMAGE: '(max-width: 768px) 100vw, 75vw',
   AVATAR: '48px',
-  CATEGORY_ICON: '44px'
-};
+  CATEGORY_ICON: '24px'
+} as const;
 
 /**
  * Generate blur data URL for placeholder
+ * Legacy function - returns static BLUR_DATA_URL for consistency and performance
  */
 export function generateBlurDataURL(width = 400, height = 300): string {
-  const shimmer = `
-    <svg width="${width}" height="${height}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-      <defs>
-        <linearGradient id="g">
-          <stop stop-color="#f6f7f8" offset="20%" />
-          <stop stop-color="#edeef1" offset="50%" />
-          <stop stop-color="#f6f7f8" offset="70%" />
-        </linearGradient>
-      </defs>
-      <rect width="${width}" height="${height}" fill="#f6f7f8" />
-      <rect id="r" width="${width}" height="${height}" fill="url(#g)" />
-      <animate xlink:href="#r" attributeName="x" from="-${width}" to="${width}" dur="1s" repeatCount="indefinite" />
-    </svg>
-  `;
-  
-  const base64 = typeof window === 'undefined' 
-    ? Buffer.from(shimmer).toString('base64')
-    : btoa(shimmer);
-    
-  return `data:image/svg+xml;base64,${base64}`;
+  return BLUR_DATA_URL;
 }

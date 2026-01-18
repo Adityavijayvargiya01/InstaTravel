@@ -1,5 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 
+import { cache } from "react";
+import { Metadata } from "next";
 import { createReservation } from "@/app/actions";
 import { CaegoryShowcase } from "@/app/components/CategoryShowcase";
 import { HomeMap } from "@/app/components/HomeMap";
@@ -7,18 +9,19 @@ import { SelectCalender } from "@/app/components/SelectCalender";
 import { ReservationSubmitButton } from "@/app/components/SubmitButtons";
 import prisma from "@/app/lib/db";
 import { useCountries } from "@/app/lib/getCountries";
-import { getOptimizedImageUrl, IMAGE_SIZES, generateBlurDataURL } from "@/app/lib/imageUtils";
+import { getOptimizedImageUrl, IMAGE_SIZES, BLUR_DATA_URL } from "@/app/lib/imageUtils";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 import Image from "next/image";
 import Link from "next/link";
-import { unstable_noStore as noStore } from "next/cache";
+
+// Enable revalidation for this page
+export const revalidate = 120; // Revalidate every 2 minutes
 
 
-async function getData(homeid: string) {
-  noStore();
+const getData = cache(async (homeid: string) => {
   const data = await prisma.home.findUnique({
     where: {
       id: homeid,
@@ -49,29 +52,58 @@ async function getData(homeid: string) {
   });
 
   return data;
+});
+
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: Promise<{ id: string }> 
+}): Promise<Metadata> {
+  const { id } = await params;
+  const data = await getData(id);
+  
+  // Get country data directly without using hooks
+  const countries = await import("world-countries");
+  const allCountries = countries.default;
+  const country = allCountries.find((c) => c.cca2 === data?.country);
+
+  return {
+    title: data?.title || 'InstaTravel Listing',
+    description: data?.description || 'Book your next getaway on InstaTravel',
+    openGraph: {
+      title: data?.title || 'InstaTravel Listing',
+      description: data?.description || 'Book your next getaway on InstaTravel',
+      images: data?.photo ? [getOptimizedImageUrl(data.photo)] : [],
+    },
+  };
 }
 
 export default async function HomeRoute({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const data = await getData(params.id);
+  const { id } = await params;
+  
+  // Parallelize independent fetches
+  const [data, user] = await Promise.all([
+    getData(id),
+    getKindeServerSession().getUser(),
+  ]);
+  
   const { getCountryByValue } = useCountries();
-  const country = getCountryByValue(data?.country as string);
-  const { getUser } = getKindeServerSession();
-  const user = await getUser();  return (
+  const country = getCountryByValue(data?.country as string);  return (
     <div className="w-full px-4 lg:w-[85%] xl:w-[75%] mx-auto mt-6 lg:mt-10 mb-12">
       <h1 className="font-medium text-xl lg:text-2xl mb-4 lg:mb-5">{data?.title}</h1>      <div className="relative h-[250px] sm:h-[350px] lg:h-[550px]">
         <Image
           alt={`Image of ${data?.title || 'home'}`}
           src={getOptimizedImageUrl(data?.photo || '')}
           fill
-          className="rounded-lg h-full object-cover w-full transition-opacity duration-300"
+          className="rounded-lg h-full object-cover w-full"
           priority
           sizes={IMAGE_SIZES.HERO_IMAGE}
           placeholder="blur"
-          blurDataURL={generateBlurDataURL(800, 550)}
+          blurDataURL={BLUR_DATA_URL}
           quality={85}
         />
       </div>
@@ -127,7 +159,7 @@ export default async function HomeRoute({
 
         <div className="w-full lg:w-1/3 lg:sticky lg:top-4 lg:self-start">
           <form action={createReservation}>
-            <input type="hidden" name="homeId" value={params.id} />
+            <input type="hidden" name="homeId" value={id} />
             <input type="hidden" name="userId" value={user?.id} />
 
             <SelectCalender reservation={data?.Reservation} />
